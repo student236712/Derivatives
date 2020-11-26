@@ -2,11 +2,10 @@ from Derivative import Derivative
 import numpy as np
 import matplotlib.pyplot as plt
 
-function_to_integrate = "3*np.power(x,3)"
-expected_value = 900
+function_to_integrate = "np.power(3,x)"
+expected_value = 59049*np.log(3)
 expected_value_name = f"expected value = {expected_value}"
-
-test_points = np.arange(5, 0.01, -0.01)
+test_points = np.arange(4, 0.00001, -0.0001)
 point_where_calculate = 10
 df_results = []
 is_first = True
@@ -26,7 +25,7 @@ plt.hlines(y=expected_value, xmin=test_points[0], xmax=test_points[-1], linestyl
            label=expected_value_name)
 plt.xlim(test_points[0], test_points[-1])
 plt.legend()
-plt.xlabel("DF steps done")
+plt.xlabel("DF delta X")
 plt.ylabel("Derivative result")
 title = f"Comparison for function = {function_to_integrate}, at point {point_where_calculate}"
 
