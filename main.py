@@ -13,14 +13,16 @@ test_points = np.arange(2, 0.01, -0.001)
 
 numerical_results = []
 analytical_results = []
+
 is_first_nm = True
 is_first_an = True
+
 derivative = Derivative()
 
 an_function = derivative.calculate_in_point_analytical_method(function_to_integrate).subs(x, point_where_calculate)
 
 fig = plt.figure()
-ax = fig.add_subplot(111)  # The big subplot
+ax = fig.add_subplot(111)
 ax1 = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 for test_point in test_points:
