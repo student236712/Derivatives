@@ -1,34 +1,64 @@
 from Derivative import Derivative
 import numpy as np
 import matplotlib.pyplot as plt
+from sympy import symbols, simplify
 
-function_to_integrate = "np.power(3,x)"
-expected_value = 59049*np.log(3)
-expected_value_name = f"expected value = {expected_value}"
-test_points = np.arange(4, 0.00001, -0.0001)
+x, dx = symbols('x dx')
+function_to_integrate = 3 * np.power(x, 3)
+expected_value = 900
 point_where_calculate = 10
-df_results = []
-is_first = True
+
+expected_value_name = f"expected value = {expected_value}"
+test_points = np.arange(2, 0.01, -0.001)
+
+numerical_results = []
+analytical_results = []
+is_first_nm = True
+is_first_an = True
 derivative = Derivative()
+
+an_function = derivative.calculate_in_point_analytical_method(function_to_integrate).subs(x, point_where_calculate)
+
+fig = plt.figure()
+ax = fig.add_subplot(111)  # The big subplot
+ax1 = fig.add_subplot(211)
+ax2 = fig.add_subplot(212)
 for test_point in test_points:
 
-    df = derivative.calculate_in_point(function_to_integrate, point_where_calculate, test_point)
-    df_results.append(df)
+    # Calculate values for two different methods
+    nm_result = derivative.calculate_in_point_numerical_method(function_to_integrate, point_where_calculate, test_point)
+    an_result = float(an_function.subs(dx, test_point))
 
-    if np.isclose(df, expected_value, 0.005) and is_first:
-        plt.vlines(x=test_point, ymin=0, ymax=expected_value + 0.1,
-                   label=f'First convergence df {test_point}', color="g")
-        is_first = False
+    # Add results to lists
+    numerical_results.append(nm_result)
+    analytical_results.append(an_result)
 
-plt.plot(test_points, df_results, label="DF values")
-plt.hlines(y=expected_value, xmin=test_points[0], xmax=test_points[-1], linestyles="--", color="k",
+    if np.isclose(nm_result, expected_value, 0.005) and is_first_nm:
+        ax1.vlines(x=test_point, ymin=0.9 * expected_value, ymax=1.1 * expected_value,
+                   label=f'First convergence nm_result {test_point}', color="g")
+        is_first_nm = False
+    if np.isclose(an_result, expected_value, 0.005) and is_first_an:
+        ax2.vlines(x=test_point, ymin=0.9 * expected_value, ymax=1.1 * expected_value,
+                   label=f'First convergence an_result {test_point}', color="m")
+        is_first_an = False
+
+ax1.plot(test_points, numerical_results, label="numeric DF values")
+ax2.plot(test_points, analytical_results, label="analytical DF values")
+ax1.hlines(y=expected_value, xmin=test_points[0], xmax=test_points[-1], linestyles="--", color="k",
            label=expected_value_name)
-plt.xlim(test_points[0], test_points[-1])
-plt.legend()
-plt.xlabel("DF delta X")
-plt.ylabel("Derivative result")
+ax2.hlines(y=expected_value, xmin=test_points[0], xmax=test_points[-1], linestyles="--", color="k",
+           label=expected_value_name)
+ax1.set_xlim([test_points[0], test_points[-1]])
+ax2.set_xlim([test_points[0], test_points[-1]])
+
+ax1.legend()
+ax2.legend()
+
+ax.set_xlabel("DF delta X")
+
+ax.set_ylabel("Derivative result")
 title = f"Comparison for function = {function_to_integrate}, at point {point_where_calculate}"
 
-plt.title(title)
+ax.set_title(title)
 plt.savefig(title + ".png")
 plt.show()
