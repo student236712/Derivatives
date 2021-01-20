@@ -5,8 +5,10 @@ from sympy import symbols, simplify
 
 class Derivative:
 
-    # Calculate values of function in points: x+delt_x and x-delta_x, then subtract them and divide by 2*delta_X
-    def calculate_in_point_numerical_method(self, function_to_integrate, point_where_calculate, delta_x):
+    # Calculate values of function in points: x+delt_x and x-delta_x,
+    # then subtract them and divide by 2*delta_X
+    def calculate_in_point_numerical_method(self, function_to_integrate,
+                                            point_where_calculate, delta_x):
         st = parser.expr(str(function_to_integrate))
         code = st.compile('Derivative.py')
         x = point_where_calculate + delta_x
