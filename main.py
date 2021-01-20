@@ -4,7 +4,7 @@ from sympy import *
 from Derivative import Derivative
 
 x, dx = symbols('x dx')
-function_to_integrate = np.power(3, x)
+function_to_derive = np.power(3, x)
 expected_value = 59049*np.log(3)
 point_where_calculate = 10
 
@@ -19,7 +19,7 @@ is_first_an = True
 
 derivative = Derivative()
 
-an_function = derivative.calculate_in_point_analytical_method(function_to_integrate).subs(x, point_where_calculate)
+an_function = derivative.calculate_in_point_analytical_method(function_to_derive).subs(x, point_where_calculate)
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -28,7 +28,7 @@ ax2 = fig.add_subplot(212)
 for test_point in test_points:
 
     # Calculate values for two different methods
-    nm_result = derivative.calculate_in_point_numerical_method(function_to_integrate,
+    nm_result = derivative.calculate_in_point_numerical_method(function_to_derive,
                                                                point_where_calculate, test_point)
     an_result = float(an_function.subs(dx, test_point))
 
@@ -60,7 +60,7 @@ ax2.legend()
 ax.set_xlabel("DF delta X")
 
 ax.set_ylabel("Derivative result")
-latex_string = printing.latex(function_to_integrate)
+latex_string = printing.latex(function_to_derive)
 title = f"Comparison for function = ${latex_string}$, at point {point_where_calculate}"
 
 ax.set_title(title)
